@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { InterviewConfig, Resume, InterviewSession, InterviewResponse } from '../types';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://inquiz-backend-1.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
