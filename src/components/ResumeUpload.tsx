@@ -65,7 +65,6 @@ const ResumeUpload: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-gray-100 font-sans flex items-center justify-center relative overflow-hidden p-6">
-      {/* Background Gradient Effect */}
       <div className="absolute inset-0 z-0 opacity-30">
         <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-transparent to-transparent"></div>
       </div>
@@ -84,7 +83,6 @@ const ResumeUpload: React.FC = () => {
           </p>
         </div>
 
-        {/* Upload Area */}
         <div 
           className={`relative p-8 border-2 border-dashed rounded-xl transition-all duration-300
             ${file ? 'border-orange-500 bg-gray-800' : 'border-gray-600 hover:border-orange-500 hover:bg-gray-800'}
@@ -119,7 +117,15 @@ const ResumeUpload: React.FC = () => {
           </div>
         </div>
 
-        {/* Status Message */}
+        <div className="mt-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0">⏱️</span>
+            <div className="text-sm text-gray-400">
+              <span className="font-semibold text-gray-300">Please note:</span> Our backend service may take 1-2 minutes to start up on first use. If upload fails initially, please wait a moment and try again. We appreciate your patience!
+            </div>
+          </div>
+        </div>
+
         {uploadStatus && (
           <div className={`mt-6 text-center text-sm font-medium p-3 rounded-lg ${
             uploadStatus.includes('Error') ? 'bg-red-900/40 text-red-300' : 'bg-green-900/40 text-green-300'
@@ -128,7 +134,6 @@ const ResumeUpload: React.FC = () => {
           </div>
         )}
 
-        {/* Upload Actions and Preview */}
         <div className="mt-8">
           {isUploading && (
             <div className="flex flex-col items-center justify-center text-center">
