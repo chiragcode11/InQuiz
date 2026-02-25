@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, BrainCircuit, Mic, FileCode2, LineChart } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { AnimatedGridPattern } from '@/components/motion/animated-grid-pattern';
 import { GridFeatureCards } from '@/components/motion/grid-feature-cards';
 import DatabaseWithRestApi from '@/components/motion/database-with-rest-api';

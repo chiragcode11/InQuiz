@@ -235,6 +235,7 @@ const InterviewRoom: React.FC = () => {
     return () => {
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript, listening, hasSubmittedResponse, isProcessingResponse]);
 
   useEffect(() => {
