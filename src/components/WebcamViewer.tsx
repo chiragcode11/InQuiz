@@ -7,11 +7,11 @@ interface WebcamViewerProps {
   onError?: (error: string) => void;
 }
 
-const WebcamViewer: React.FC<WebcamViewerProps> = ({ 
-  className, 
-  style, 
+const WebcamViewer: React.FC<WebcamViewerProps> = ({
+  className,
+  style,
   onStreamReady,
-  onError 
+  onError
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -21,6 +21,7 @@ const WebcamViewer: React.FC<WebcamViewerProps> = ({
 
   useEffect(() => {
     let isMounted = true;
+    const currentVideoRef = videoRef.current;
 
     const startWebcam = async () => {
       try {
@@ -32,16 +33,16 @@ const WebcamViewer: React.FC<WebcamViewerProps> = ({
           streamRef.current.getTracks().forEach(track => track.stop());
         }
 
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
             width: { ideal: 640, max: 1280 },
             height: { ideal: 480, max: 720 },
             facingMode: 'user',
             frameRate: { ideal: 30 }
           },
-          audio: false 
+          audio: false
         });
-        
+
         // Check if component is still mounted
         if (!isMounted) {
           stream.getTracks().forEach(track => track.stop());
@@ -49,12 +50,12 @@ const WebcamViewer: React.FC<WebcamViewerProps> = ({
         }
 
         streamRef.current = stream;
-        
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          
+
+        if (currentVideoRef) {
+          currentVideoRef.srcObject = stream;
+
           // Wait for video to be ready
-          const playPromise = videoRef.current.play();
+          const playPromise = currentVideoRef.play();
           if (playPromise !== undefined) {
             playPromise.then(() => {
               if (isMounted) {
@@ -89,7 +90,7 @@ const WebcamViewer: React.FC<WebcamViewerProps> = ({
     // Cleanup function
     return () => {
       isMounted = false;
-      
+
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => {
           track.stop();
@@ -97,14 +98,15 @@ const WebcamViewer: React.FC<WebcamViewerProps> = ({
         });
         streamRef.current = null;
       }
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
+
+      if (currentVideoRef) {
+        currentVideoRef.srcObject = null;
       }
-      
+
       setIsStreamActive(false);
       setIsLoading(false);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only run once
 
   // Additional cleanup for page navigation
@@ -153,12 +155,12 @@ const WebcamViewer: React.FC<WebcamViewerProps> = ({
         muted
         playsInline
         className="w-full h-full object-cover"
-        style={{ 
+        style={{
           transform: 'scaleX(-1)', // Mirror effect
           backgroundColor: '#000'
         }}
       />
-      
+
       {/* Loading overlay */}
       {(isLoading || !isStreamActive) && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-90">

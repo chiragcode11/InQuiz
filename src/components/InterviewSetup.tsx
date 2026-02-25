@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { apiService } from '../services/api';
-import { InterviewConfig, DifficultyLevel, QuestionType } from '../types';
+import { InterviewConfig, QuestionType } from '../types';
 import { DIFFICULTY_OPTIONS, QUESTION_TYPE_OPTIONS, DURATION_OPTIONS, DEFAULT_CONFIG } from '../utils/constants';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';

@@ -22,6 +22,7 @@ const InterviewRoom: React.FC = () => {
 
   // Core interview state
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [questionIndex, setQuestionIndex] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -36,7 +37,6 @@ const InterviewRoom: React.FC = () => {
 
   // Permission and camera state
   const [showPermissionRequest, setShowPermissionRequest] = useState(true);
-  const [hasPermissions, setHasPermissions] = useState(false);
   const [permissionError, setPermissionError] = useState('');
   const [isRequestingPermissions, setIsRequestingPermissions] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
@@ -272,7 +272,6 @@ const InterviewRoom: React.FC = () => {
       micStream.getTracks().forEach(track => track.stop());
       cameraStream.getTracks().forEach(track => track.stop());
 
-      setHasPermissions(true);
       setShowPermissionRequest(false);
       setShowCamera(true);
 

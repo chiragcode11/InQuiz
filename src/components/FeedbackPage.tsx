@@ -4,8 +4,8 @@ import { apiService } from '../services/api';
 import { InterviewSession, InterviewResponse } from '../types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Loader2, Home, Download, TrendingUp, CheckCircle, AlertTriangle, MessageSquare, ChevronRight } from 'lucide-react';
+import { } from '@/components/ui/progress';
+import { Loader2, Download, TrendingUp, CheckCircle, AlertTriangle, MessageSquare, ChevronRight } from 'lucide-react';
 import { Particles } from '@/components/motion/particles';
 
 const FeedbackPage: React.FC = () => {
@@ -15,7 +15,6 @@ const FeedbackPage: React.FC = () => {
 
   const [interview, setInterview] = useState<InterviewSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [conversation, setConversation] = useState<any[]>([]);
 
   useEffect(() => {
     if (!interviewId) {
@@ -24,17 +23,17 @@ const FeedbackPage: React.FC = () => {
     }
 
     loadInterviewData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interviewId, navigate]);
 
   const loadInterviewData = async () => {
     try {
-      const [interviewData, conversationData] = await Promise.all([
+      const [interviewData] = await Promise.all([
         apiService.getInterview(interviewId),
         apiService.getConversation(interviewId)
       ]);
 
       setInterview(interviewData);
-      setConversation(conversationData.conversation || []);
     } catch (error) {
       console.error('Error loading interview data:', error);
     } finally {

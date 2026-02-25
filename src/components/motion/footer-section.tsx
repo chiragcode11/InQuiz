@@ -99,7 +99,7 @@ function Footerdemo() {
                                             className="rounded-full h-9 w-9 border-border/50 hover:border-white/20 hover:bg-white/5 hover:text-white"
                                             asChild
                                         >
-                                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                                            <a href="https://facebook.com/inquiz" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                                                 <Facebook className="h-4 w-4" />
                                             </a>
                                         </Button>
@@ -118,7 +118,7 @@ function Footerdemo() {
                                             className="rounded-full h-9 w-9 border-border/50 hover:border-white/20 hover:bg-white/5 hover:text-white"
                                             asChild
                                         >
-                                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                                            <a href="https://twitter.com/inquiz" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                                                 <Twitter className="h-4 w-4" />
                                             </a>
                                         </Button>
@@ -137,7 +137,7 @@ function Footerdemo() {
                                             className="rounded-full h-9 w-9 border-border/50 hover:border-white/20 hover:bg-white/5 hover:text-white"
                                             asChild
                                         >
-                                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                            <a href="https://instagram.com/inquiz" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                                 <Instagram className="h-4 w-4" />
                                             </a>
                                         </Button>
@@ -156,7 +156,7 @@ function Footerdemo() {
                                             className="rounded-full h-9 w-9 border-border/50 hover:border-white/20 hover:bg-white/5 hover:text-white"
                                             asChild
                                         >
-                                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                            <a href="https://linkedin.com/company/inquiz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                                 <Linkedin className="h-4 w-4" />
                                             </a>
                                         </Button>
