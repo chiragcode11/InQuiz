@@ -1,129 +1,169 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ChevronRight, BrainCircuit, Mic, FileCode2, LineChart } from 'lucide-react';
+import { AnimatedGridPattern } from '@/components/motion/animated-grid-pattern';
+import { GridFeatureCards } from '@/components/motion/grid-feature-cards';
+import DatabaseWithRestApi from '@/components/motion/database-with-rest-api';
+import { Footerdemo } from '@/components/motion/footer-section';
+import { Particles } from '@/components/motion/particles';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+
+
+
+const MockEnvironmentSection = () => {
+  return (
+    <section className="py-24 relative z-10 w-full">
+      <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        {/* Left Content */}
+        <div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-2 leading-tight">
+            Master your interview.
+          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-500 mb-6 leading-tight">
+            Focus on coding.
+          </h2>
+          <p className="text-lg text-zinc-400 leading-relaxed max-w-lg">
+            From instant resume analysis to real-time voice interviews, InQuiz handles the complex mock environment so you can scale your skills without the headache.
+          </p>
+        </div>
+
+        {/* Right Content - Visual Diagram */}
+        <div className="relative h-[400px] w-full overflow-hidden flex items-center justify-center">
+          <DatabaseWithRestApi
+            title="Instant Data Sync"
+            circleText="API"
+            lightColor="#ffffff"
+            badgeTexts={{
+              first: "RESUME",
+              second: "AUDIO",
+              third: "FEEDBACK",
+              fourth: "REPORT"
+            }}
+            buttonTexts={{
+              first: "InQuiz Core",
+              second: "AI Analysis"
+            }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    // This state helps trigger the fade-in animation on component mount
     setHasLoaded(true);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-gray-100 font-sans relative overflow-hidden">
-      {/* Background Gradient Effect - Subtle and elegant */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-transparent to-transparent"></div>
-      </div>
+    <div className="min-h-[85vh] relative overflow-hidden flex flex-col bg-black text-white selection:bg-white/20 font-sans">
+      {/* --- HERO SECTION --- */}
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center p-6 border-b border-white/5 pt-16">
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.15}
+          duration={3}
+          repeatDelay={1}
+          className={cn(
+            "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+            "inset-x-0 inset-y-[-30%] h-[150%] skew-y-12"
+          )}
+        />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 animate-fade-in-up">
-        {/* Header Section */}
-        <header 
-          className={`text-center mb-20 transition-all duration-1000 ${
-            hasLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}
-        >
-          <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent drop-shadow-lg">
-            AI Interview Assistant
-          </h1>
-          <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto tracking-wide">
-            Practice interviews with AI-powered feedback and adaptive questioning
-          </p>
-        </header>
+        {/* Grayscale Glow Effects */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[500px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
 
-        {/* Hero Section */}
-        <div 
-          className={`bg-gray-900 rounded-3xl p-8 md:p-12 mb-20 border border-gray-700 shadow-2xl shadow-orange-500/10 transition-all duration-1000 delay-200 ease-out ${
-            hasLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-          }`}
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-semibold text-white mb-6">
-              Get Ready for Your Next Interview
-            </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Upload your resume and practice with our AI interviewer that adapts to your experience level and provides real-time feedback
-            </p>
-          </div>
+        <div className="relative z-10 max-w-4xl w-full mx-auto space-y-8 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: hasLoaded ? 1 : 0, y: hasLoaded ? 0 : 20 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-md"
+          >
+            <span className="flex h-2 w-2 rounded-full bg-white opacity-80 animate-pulse"></span>
+            <span className="text-xs font-medium text-zinc-400 tracking-wide uppercase">Introducing InQuiz Beta</span>
+          </motion.div>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {['📄', '🤖', '📊'].map((emoji, index) => (
-              <div 
-                key={index}
-                className={`bg-gray-800 rounded-2xl p-8 hover:bg-gray-700 transition-all duration-500 hover:transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-orange-500/30 group cursor-pointer ${
-                  hasLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-                }`}
-                style={{ transitionDelay: `${index * 150 + 500}ms` }}
-              >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-500 text-center">
-                  {emoji}
-                </div>
-                <h3 className="text-xl font-semibold text-orange-400 mb-3">
-                  {index === 0 ? 'Resume Analysis' : index === 1 ? 'Voice AI Interviewer' : 'Detailed Feedback'}
-                </h3>
-                <p className="text-gray-300 leading-relaxed text-sm">
-                  {index === 0
-                    ? 'AI analyzes your resume to generate relevant, personalized interview questions'
-                    : index === 1
-                    ? 'Real-time voice interview with adaptive questioning and natural conversation flow'
-                    : 'Get comprehensive feedback, scoring, and improvement suggestions after each interview'}
-                </p>
-              </div>
-            ))}
-          </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: hasLoaded ? 1 : 0, y: hasLoaded ? 0 : 20 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="text-5xl md:text-7xl font-bold text-center tracking-tighter text-white leading-[1.1] "
+          >
+            Master Your Next <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500">
+              Interview with AI
+            </span>
+          </motion.h1>
 
-          {/* CTA Button */}
-          <div className="text-center">
-            <button 
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold text-lg px-12 py-4 rounded-full transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50 focus:outline-none focus:ring-4 focus:ring-orange-500/50 relative overflow-hidden group"
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: hasLoaded ? 1 : 0, y: hasLoaded ? 0 : 20 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-lg text-zinc-400 font-normal max-w-2xl text-center tracking-wide leading-relaxed"
+          >
+            Create, manage, and scale your interview prep with our all-in-one platform. No complex setups, just pure practice power.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: hasLoaded ? 1 : 0, y: hasLoaded ? 0 : 20 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="mt-8 flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto"
+          >
+            <Button
+              size="lg"
+              className="rounded-full px-8 py-6 text-sm font-medium bg-white text-black hover:bg-zinc-200 transition-all w-full sm:w-auto gap-2"
               onClick={() => navigate('/upload')}
             >
-              Start Your Interview Practice
-              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.08] transition-opacity duration-300"></span>
-            </button>
-          </div>
+              Start Practicing Free <ChevronRight className="w-4 h-4" />
+            </Button>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: hasLoaded ? 1 : 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="text-xs text-zinc-600 mt-4"
+          >
+            No credit card required • Free forever plan
+          </motion.p>
         </div>
+      </section>
 
-        {/* How It Works Section */}
-        <div 
-          className={`bg-gray-900 rounded-3xl p-8 md:p-12 border border-gray-700 shadow-2xl shadow-gray-700/10 transition-all duration-1000 delay-500 ease-out ${
-            hasLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-          }`}
-        >
-          <h3 className="text-3xl font-semibold text-white text-center mb-12">
-            How It Works
-          </h3>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {['1', '2', '3', '4'].map((step, index) => (
-              <div 
-                key={index}
-                className={`text-center group transition-all duration-500 ${
-                  hasLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-                }`}
-                style={{ transitionDelay: `${index * 150 + 800}ms` }}
-              >
-                <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white font-bold text-2xl w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-orange-500/30">
-                  {step}
-                </div>
-                <h4 className="text-xl font-semibold text-white mb-4">
-                  {index === 0 ? 'Upload Resume' : index === 1 ? 'Configure Interview' : index === 2 ? 'Voice Interview' : 'Get Feedback'}
-                </h4>
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  {index === 0
-                    ? 'Upload your PDF resume for comprehensive AI analysis and question generation'
-                    : index === 1
-                    ? 'Choose your difficulty level, question types, and interview duration preferences'
-                    : index === 2
-                    ? 'Practice with our intelligent AI interviewer using natural voice conversation'
-                    : 'Receive detailed analysis, scores, and personalized improvement recommendations'}
-                </p>
-              </div>
-            ))}
+      {/* --- CONTENT WRAPPER WITH PARTICLES --- */}
+      <div className="relative w-full">
+        <Particles
+          className="absolute inset-0 z-0"
+          quantity={100}
+          ease={80}
+          color="#ffffff"
+          refresh
+        />
+
+        {/* --- FEATURES SECTION --- */}
+        <section className="py-24 relative z-10 w-full border-b border-white/5">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="mb-16 text-center max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-6">
+                Everything you need to succeed.
+              </h2>
+            </div>
+
+            <GridFeatureCards />
           </div>
-        </div>
+        </section>
+
+        {/* --- NEW AUTOMATION / MOCK ENVIRONMENT SECTION --- */}
+        <MockEnvironmentSection />
+
+        {/* --- FOOTER --- */}
+        <Footerdemo />
+
       </div>
     </div>
   );
