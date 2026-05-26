@@ -10,7 +10,6 @@ const ResumeUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
-  const [resumeData, setResumeData] = useState<any>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const navigate = useNavigate();
 
@@ -38,7 +37,6 @@ const ResumeUpload: React.FC = () => {
 
     try {
       const result = await apiService.uploadResume(file);
-      setResumeData(result);
       setUploadStatus('Resume processed successfully! Redirecting...');
 
       setTimeout(() => {

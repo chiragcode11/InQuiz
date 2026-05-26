@@ -5,8 +5,8 @@ import { InterviewConfig, QuestionType } from '../types';
 import { DIFFICULTY_OPTIONS, QUESTION_TYPE_OPTIONS, DURATION_OPTIONS, DEFAULT_CONFIG } from '../utils/constants';
 import { Button } from '@/components/ui/button';
 import {
-  ArrowLeft, Loader2, CheckCircle2, Plus, Minus,
-  Zap, Cpu, Crown, Code2, BrainCircuit, Briefcase, Sparkles, Layers, Clock, Terminal, ChevronRight,
+  ArrowLeft, Loader2, Plus, Minus,
+  Code2, BrainCircuit, Briefcase, Layers, Clock, Terminal, ChevronRight,
   GraduationCap
 } from 'lucide-react';
 import { Particles } from '@/components/motion/particles';
