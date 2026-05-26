@@ -4,9 +4,13 @@ import { apiService } from '../services/api';
 import { InterviewConfig, QuestionType } from '../types';
 import { DIFFICULTY_OPTIONS, QUESTION_TYPE_OPTIONS, DURATION_OPTIONS, DEFAULT_CONFIG } from '../utils/constants';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Settings2, ArrowLeft, Loader2, PlayCircle, CheckCircle2, ChevronDown, Plus, Minus } from 'lucide-react';
+import {
+  ArrowLeft, Loader2, CheckCircle2, Plus, Minus,
+  Zap, Cpu, Crown, Code2, BrainCircuit, Briefcase, Sparkles, Layers, Clock, Terminal, ChevronRight,
+  GraduationCap
+} from 'lucide-react';
 import { Particles } from '@/components/motion/particles';
+import { cn } from '@/lib/utils';
 
 const InterviewSetup: React.FC = () => {
   const location = useLocation();
@@ -47,212 +51,252 @@ const InterviewSetup: React.FC = () => {
     setIsGenerating(true);
     try {
       const result = await apiService.generateQuestions(resumeId, config);
-
-      setTimeout(() => {
-        navigate('/interview', {
-          state: {
-            interviewId: result.interview_id,
-            questions: result.questions,
-            config: config
-          }
-        });
-      }, 2000);
+      navigate('/interview', {
+        state: {
+          interviewId: result.interview_id,
+          questions: result.questions,
+          config: config
+        }
+      });
     } catch (error) {
       console.error('Error generating questions:', error);
-    } finally {
       setIsGenerating(false);
     }
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-6 py-12 bg-black">
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-6 py-20 bg-black text-white selection:bg-white/20 font-sans">
+      {/* Ambient background glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[400px] bg-white/[0.03] blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-white/[0.02] blur-[100px] rounded-full pointer-events-none" />
+
+      {/* Particles from Home Page */}
       <Particles
         className="absolute inset-0 z-0"
-        quantity={100}
+        quantity={60}
         ease={80}
         color="#ffffff"
         refresh
       />
-      <Card
-        className={`relative z-10 w-full max-w-4xl p-8 md:p-12 glass-card rounded-3xl border-white/10 transition-all duration-1000 ${hasLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-          }`}
+
+      <div
+        className={cn(
+          "relative z-10 w-full max-w-2xl flex flex-col space-y-6 transition-all duration-1000",
+          hasLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+        )}
       >
-        <div className="flex items-center mb-10 gap-4 border-b border-white/10 pb-8">
-          <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10 shrink-0" onClick={() => navigate('/upload')}>
-            <ArrowLeft className="w-6 h-6 text-muted-foreground" />
-          </Button>
-          <div className="flex-1">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
-              Interview Setup
-            </h2>
-            <p className="text-muted-foreground text-lg">Fine-tune the AI parameters to match your goals</p>
+        {/* Centered setup badge, title, & description inspired by Home Page */}
+        <div className="flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-md">
+            <span className="flex h-2 w-2 rounded-full bg-white opacity-80 animate-pulse"></span>
+            <span className="text-xs font-medium text-zinc-400 tracking-wide uppercase">AI Customizer</span>
           </div>
-          <div className="hidden md:flex w-16 h-16 rounded-full bg-white/10 items-center justify-center ring-4 ring-white/5">
-            <Settings2 className="w-8 h-8 text-white" />
-          </div>
+
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-1 leading-tight">
+            Configure Your <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500">Interview Session</span>
+          </h1>
+          <p className="text-muted-foreground text-xs md:text-sm max-w-md mt-1 leading-relaxed">
+            Adjust the AI parameters below. Your detected skills and experience context are automatically loaded.
+          </p>
         </div>
 
-        {/* Resume Summary Section */}
-        <div className="mb-10 p-6 bg-white/5 rounded-2xl border border-white/5 animate-fade-in relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-1 h-full bg-zinc-300"></div>
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-zinc-300" /> Active Resume Context
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold">
-                {resumeData?.skills?.length || 0}
-              </div>
-              <span className="text-gray-300">Skills Detected</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold">
-                {resumeData?.experience?.length || 0}
-              </div>
-              <span className="text-gray-300">Experience Entries</span>
-            </div>
-          </div>
+        {/* Floating Profile Context pills */}
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-semibold tracking-wide uppercase">
+          <span className="flex items-center gap-1.5 bg-white/[0.02] border border-white/5 px-3 py-1.5 rounded-full backdrop-blur-md text-zinc-400">
+            <Layers className="w-3.5 h-3.5 text-zinc-500" />
+            <span>{resumeData?.skills?.length || 0} Skills</span>
+          </span>
+          <span className="flex items-center gap-1.5 bg-white/[0.02] border border-white/5 px-3 py-1.5 rounded-full backdrop-blur-md text-zinc-400">
+            <Briefcase className="w-3.5 h-3.5 text-zinc-500" />
+            <span>{resumeData?.experience?.length || 0} Projects</span>
+          </span>
+          <span className="flex items-center gap-1.5 bg-white/[0.02] border border-white/5 px-3 py-1.5 rounded-full backdrop-blur-md text-zinc-400">
+            <GraduationCap className="w-3.5 h-3.5 text-zinc-500" />
+            <span>{resumeData?.education?.length || 0} Education</span>
+          </span>
         </div>
 
-        <div className="space-y-10">
-          {/* Difficulty Level */}
-          <div>
-            <h4 className="text-xl font-semibold text-white mb-4">Difficulty Level</h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {DIFFICULTY_OPTIONS.map(option => (
-                <div
-                  key={option.value}
-                  className={`relative p-6 rounded-2xl border transition-all duration-300 cursor-pointer group
-                      ${config.difficulty === option.value
-                      ? 'border-zinc-400 bg-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]'
-                      : 'border-white/10 bg-white/5 hover:border-white/40 hover:bg-white/10'
-                    }`}
-                  onClick={() => handleConfigChange('difficulty', option.value)}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`text-lg font-bold ${config.difficulty === option.value ? 'text-white' : 'text-zinc-400'}`}>
-                      {option.label}
-                    </span>
-                    <div className={`w-5 h-5 rounded-full border-2 transition-all duration-300 flex items-center justify-center
-                        ${config.difficulty === option.value ? 'border-zinc-300' : 'border-muted-foreground'}`}>
-                      <div className={`w-2.5 h-2.5 rounded-full bg-zinc-300 transition-all duration-300 ${config.difficulty === option.value ? 'scale-100' : 'scale-0'}`}></div>
+        {/* Settings options list */}
+        <div className="space-y-6 divide-y divide-white/5">
+
+          {/* Difficulty Level Slider */}
+          <div className="pt-5 first:pt-0">
+            <div className="flex flex-col items-center text-center mb-2">
+              <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-0.5">Step 1</h4>
+              <h3 className="text-lg font-bold text-white tracking-tight">Select Difficulty</h3>
+            </div>
+
+            {/* Timeline selector track */}
+            <div className="relative flex justify-between items-start max-w-md mx-auto px-4 pt-4 pb-2">
+              {/* Connecting line */}
+              <div className="absolute left-8 right-8 h-[1px] bg-white/20 top-[24px]" />
+
+              {/* Option markers */}
+              {DIFFICULTY_OPTIONS.map((option) => {
+                const isSelected = config.difficulty === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleConfigChange('difficulty', option.value)}
+                    className="relative z-10 flex flex-col items-center group focus:outline-none"
+                  >
+                    {/* Marker dot */}
+                    <div className={cn(
+                      "w-4 h-4 rounded-full border-2 transition-all duration-300 flex items-center justify-center bg-black",
+                      isSelected
+                        ? "border-white scale-125 shadow-[0_0_12px_rgba(255,255,255,0.8)]"
+                        : "border-zinc-800 group-hover:border-zinc-500"
+                    )}>
+                      {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
                     </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{option.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Question Types */}
-          <div>
-            <h4 className="text-xl font-semibold text-white mb-4">Focus Areas</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {QUESTION_TYPE_OPTIONS.map(option => (
-                <div
-                  key={option.value}
-                  className={`relative p-5 rounded-2xl border transition-all duration-300 cursor-pointer flex items-start group
-                      ${config.question_types.includes(option.value)
-                      ? 'border-zinc-400 bg-white/10'
-                      : 'border-white/10 bg-white/5 hover:border-white/40 hover:bg-white/10'
-                    }`}
-                  onClick={() => handleQuestionTypeToggle(option.value)}
-                >
-                  <div className={`w-6 h-6 rounded-md border-2 mt-0.5 transition-all duration-300 flex items-center justify-center mr-4 shrink-0
-                      ${config.question_types.includes(option.value) ? 'bg-zinc-300 border-zinc-300 text-black' : 'border-muted-foreground'}`}>
-                    {config.question_types.includes(option.value) && <CheckCircle2 className="w-4 h-4" />}
-                  </div>
-                  <div>
-                    <span className={`text-lg font-bold mb-1 block ${config.question_types.includes(option.value) ? 'text-white' : 'text-zinc-400'}`}>
-                      {option.label}
+                    {/* Label */}
+                    <span className={cn(
+                      "text-[11px] font-bold mt-3 tracking-wide uppercase transition-colors",
+                      isSelected ? "text-white" : "text-zinc-500 group-hover:text-zinc-400"
+                    )}>
+                      {option.label.replace(' Level', '')}
                     </span>
-                    <p className="text-sm text-muted-foreground">{option.description}</p>
-                  </div>
-                </div>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Duration & Count */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 p-8 rounded-3xl border border-white/5">
-            <div>
-              <h4 className="text-xl font-semibold text-white mb-4">Interview Duration</h4>
-              <div className="relative">
-                <select
-                  value={config.duration_minutes}
-                  onChange={(e) => handleConfigChange('duration_minutes', parseInt(e.target.value))}
-                  className="w-full p-4 rounded-xl glass-card border border-white/10 text-white font-medium appearance-none focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/40 cursor-pointer"
-                >
-                  {DURATION_OPTIONS.map(option => (
-                    <option key={option.value} value={option.value} className="bg-gray-900">
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+          {/* Focus Areas pills */}
+          <div className="pt-6">
+            <div className="flex flex-col items-center text-center mb-2">
+              <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-0.5">Step 2</h4>
+              <h3 className="text-lg font-bold text-white tracking-tight">Choose Focus Areas</h3>
+            </div>
+
+            <div className="flex flex-wrap gap-3 justify-center max-w-lg mx-auto">
+              {QUESTION_TYPE_OPTIONS.map(option => {
+                const IconComponent = option.value === 'technical' ? Code2 : option.value === 'behavioral' ? BrainCircuit : Briefcase;
+                const isSelected = config.question_types.includes(option.value);
+
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleQuestionTypeToggle(option.value)}
+                    className={cn(
+                      "flex items-center gap-2.5 px-6 py-3.5 rounded-full border text-xs font-bold transition-all duration-300 backdrop-blur-md",
+                      isSelected
+                        ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.15)] scale-[1.03]"
+                        : "bg-white/5 text-zinc-300 border-white/10 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                    )}
+                  >
+                    <IconComponent className="w-4 h-4" />
+                    <span>{option.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Duration & Questions Count side-by-side controls */}
+          <div className="pt-6 grid md:grid-cols-2 gap-6 max-w-lg mx-auto">
+            {/* Duration pills */}
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4 text-zinc-500" />
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Duration</span>
+              </div>
+
+              <div className="flex gap-2">
+                {DURATION_OPTIONS.map(option => {
+                  const isSelected = config.duration_minutes === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => handleConfigChange('duration_minutes', option.value)}
+                      className={cn(
+                        'w-11 h-11 rounded-full border text-[10px] font-bold flex items-center justify-center transition-all duration-300',
+                        isSelected
+                          ? 'bg-white text-black border-white shadow-[0_0_12px_rgba(255,255,255,0.15)] scale-[1.05]'
+                          : 'bg-white/[0.02] text-zinc-500 border-white/5 hover:border-white/20 hover:text-white hover:bg-white/5'
+                      )}
+                    >
+                      {option.label.replace(' minutes', 'm')}
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            <div>
-              <h4 className="text-xl font-semibold text-white mb-4">Number of Questions</h4>
-              <div className="flex items-center justify-between p-2 rounded-xl glass-card border border-white/10">
+
+            {/* Questions Counter */}
+            <div className="flex flex-col items-center">
+              <div className="flex items-center gap-2 mb-2">
+                <Terminal className="w-4 h-4 text-zinc-500" />
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Questions</span>
+              </div>
+
+              <div className="flex items-center gap-4 bg-white/[0.02] border border-white/5 px-4 py-1.5 rounded-full backdrop-blur-md">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="w-12 h-12 rounded-lg hover:bg-white/10"
+                  type="button"
+                  className="w-8 h-8 rounded-full hover:bg-white/10 transition-transform active:scale-90"
                   onClick={() => config.num_questions > 3 && handleConfigChange('num_questions', config.num_questions - 1)}
                   disabled={config.num_questions <= 3}
                 >
-                  <Minus className="w-5 h-5" />
+                  <Minus className="w-3.5 h-3.5 text-white" />
                 </Button>
-                <div className="flex flex-col items-center">
-                  <span className="text-2xl font-bold text-white leading-none">{config.num_questions}</span>
-                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Questions</span>
+
+                <div className="flex flex-col items-center min-w-[40px]">
+                  <span className="text-xl font-black text-white leading-none tracking-tighter">{config.num_questions}</span>
                 </div>
+
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="w-12 h-12 rounded-lg hover:bg-white/10"
+                  type="button"
+                  className="w-8 h-8 rounded-full hover:bg-white/10 transition-transform active:scale-90"
                   onClick={() => config.num_questions < 10 && handleConfigChange('num_questions', config.num_questions + 1)}
                   disabled={config.num_questions >= 10}
                 >
-                  <Plus className="w-5 h-5" />
+                  <Plus className="w-3.5 h-3.5 text-white" />
                 </Button>
               </div>
             </div>
           </div>
+
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-end items-center mt-12 pt-8 border-t border-white/10">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6 border-t border-white/5">
           <Button
             variant="ghost"
             size="lg"
-            className="w-full sm:w-auto text-muted-foreground hover:text-white rounded-full"
+            className="w-full sm:w-auto text-zinc-500 hover:text-white rounded-full px-8 py-6 text-xs font-semibold border border-white/5 hover:bg-white/[0.02] transition-all gap-2"
             onClick={() => navigate('/upload')}
             disabled={isGenerating}
           >
-            Back
+            <ArrowLeft className="w-4 h-4" /> Back
           </Button>
-
+ 
           <Button
             size="lg"
-            className="w-full sm:w-auto rounded-full px-10 py-6 text-lg font-bold bg-white text-black hover:bg-zinc-200 transition-all transform hover:-translate-y-1 group"
+            className="w-full sm:w-auto rounded-full px-10 py-6 text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-all gap-2 group shadow-[0_4px_25px_rgba(255,255,255,0.08)] hover:shadow-[0_4px_35px_rgba(255,255,255,0.2)]"
             onClick={generateQuestions}
             disabled={isGenerating || config.question_types.length === 0}
           >
             {isGenerating ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin mr-3" />
+                <Loader2 className="w-4 h-4 animate-spin mr-2 text-black" />
                 Generating Curriculum...
               </>
             ) : (
               <>
-                Start Interview <PlayCircle className="w-6 h-6 ml-3 group-hover:scale-110 transition-transform" />
+                Start Interview <ChevronRight className="w-4 h-4 stroke-[2.5px] group-hover:translate-x-0.5 transition-transform" />
               </>
             )}
           </Button>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

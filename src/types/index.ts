@@ -42,6 +42,8 @@ export interface InterviewResponse {
     clarity_score: number;
     missing_points: string[];
     strengths: string[];
+    areas_for_improvement?: string[];
+    overall_feedback?: string;
     follow_up_needed: boolean;
     suggested_follow_up: string;
   };
@@ -57,6 +59,7 @@ export interface InterviewSession {
   created_at: string;
   started_at?: string;
   completed_at?: string;
+  conversation?: any[];
 }
 
 export interface InterviewConfig {

@@ -47,7 +47,6 @@ const ResumeUpload: React.FC = () => {
     } catch (error) {
       setUploadStatus('Error processing resume. Please try again.');
       console.error('Upload error:', error);
-    } finally {
       setIsUploading(false);
     }
   };
@@ -92,113 +91,113 @@ const ResumeUpload: React.FC = () => {
           </div>
         </div>
 
-        <div
-          className={`relative p-10 border-2 border-dashed rounded-2xl transition-all duration-300 flex flex-col items-center justify-center text-center
-            ${file ? 'border-zinc-400 bg-white/5' : 'border-white/20 hover:border-white/40 hover:bg-white/5'}
-          `}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          {file ? (
-            <div className="flex flex-col items-center animate-fade-in">
-              <div className="bg-white/10 p-4 rounded-full mb-4 ring-4 ring-white/5">
-                <FileText className="w-10 h-10 text-white" />
-              </div>
-              <div className="text-lg font-semibold text-white mb-1">{file.name}</div>
-              <div className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</div>
+        {isUploading ? (
+          <div className="relative p-10 py-16 border border-white/10 rounded-2xl bg-white/[0.02] flex flex-col items-center justify-center text-center overflow-hidden animate-fade-in min-h-[300px]">
+            {/* Ambient background glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white/5 blur-3xl rounded-full pointer-events-none" />
+
+            {/* Glowing file/scanner container */}
+            <div className="relative mb-8 w-24 h-24 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
+              {/* Dashed outer spin */}
+              <div className="absolute inset-1 rounded-xl border border-dashed border-white/15 animate-spin" style={{ animationDuration: '10s' }} />
+              
+              {/* Floating PDF file icon */}
+              <FileText className="w-10 h-10 text-zinc-300 relative z-10 animate-float" />
+              
+              {/* Scan laser line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80 blur-[0.5px] animate-scan shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
             </div>
-          ) : (
-            <div className="flex flex-col items-center">
-              <div className="bg-white/5 p-4 rounded-full mb-4 group-hover:bg-white/10 transition-colors">
-                <UploadCloud className="w-10 h-10 text-muted-foreground" />
-              </div>
-              <p className="text-white text-lg font-medium mb-1">Drag and drop your PDF here</p>
-              <p className="text-muted-foreground text-sm mb-6">Max file size 5MB</p>
 
-              <label htmlFor="file-input">
-                <Button type="button" size="lg" className="rounded-full bg-white text-black hover:bg-zinc-200 cursor-pointer pointer-events-none">
-                  <span>Browse Files</span>
-                </Button>
-              </label>
-              <input
-                id="file-input"
-                type="file"
-                accept=".pdf"
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-            </div>
-          )}
-        </div>
+            {/* Status texts */}
+            <div className="relative z-10 space-y-4 max-w-sm">
+              <h3 className="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-3">
+                {uploadStatus.includes('successfully') ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 animate-pulse" />
+                ) : (
+                  <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
+                )}
+                <span>{uploadStatus.includes('successfully') ? 'Analysis Complete' : 'Analyzing Resume'}</span>
+              </h3>
+              
+              <p className="text-zinc-400 text-sm font-medium transition-all duration-300">
+                {uploadStatus}
+              </p>
 
-        <div className="mt-6 flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/5">
-          <Clock className="w-5 h-5 text-zinc-400 shrink-0 mt-0.5" />
-          <p className="text-sm text-muted-foreground">
-            <span className="text-gray-300 font-medium">First-time use:</span> The backend might take 1-2 minutes to spin up. If the upload hangs, simply try again.
-          </p>
-        </div>
-
-        {uploadStatus && (
-          <div className={`mt-6 flex items-center gap-2 p-4 rounded-xl text-sm font-medium animate-fade-in ${uploadStatus.includes('Error') ? 'bg-destructive/10 text-destructive border border-destructive/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-            }`}>
-            {uploadStatus.includes('Error') ? <AlertCircle className="w-4 h-4" /> : <Loader2 className="w-4 h-4 animate-spin" />}
-            {uploadStatus}
-          </div>
-        )}
-
-        {isUploading && !uploadStatus.includes('successfully') && (
-          <div className="mt-8 flex flex-col items-center justify-center text-center animate-fade-in">
-            <span className="text-white font-medium">Analyzing your experience...</span>
-          </div>
-        )}
-
-        {resumeData && (
-          <div className="mt-8 p-6 bg-white/5 rounded-2xl border border-white/10 animate-fade-in relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-white"></div>
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-zinc-300" /> Analysis Complete
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Detected Skills</h4>
-                <div className="flex flex-wrap gap-2">
-                  {resumeData.skills.slice(0, 8).map((skill: string, index: number) => (
-                    <span key={index} className="bg-white/10 text-zinc-300 border border-white/20 text-xs px-3 py-1 rounded-full font-medium">
-                      {skill}
-                    </span>
-                  ))}
-                  {resumeData.skills.length > 8 && (
-                    <span className="bg-white/5 text-muted-foreground text-xs px-3 py-1 rounded-full font-medium">
-                      +{resumeData.skills.length - 8} more
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Key Experience</h4>
-                <ul className="space-y-2 text-gray-300 text-sm">
-                  {resumeData.experience.slice(0, 2).map((exp: string, index: number) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-1.5 shrink-0"></div>
-                      <span className="line-clamp-2">{exp}</span>
-                    </li>
-                  ))}
-                </ul>
+              {/* Progress bar */}
+              <div className="w-56 h-1 bg-white/5 rounded-full overflow-hidden mx-auto border border-white/5 relative">
+                <div className={`absolute top-0 bottom-0 left-0 h-full rounded-full transition-all ${
+                  uploadStatus.includes('successfully') 
+                    ? 'w-full bg-emerald-400 duration-500' 
+                    : 'w-3/4 bg-white animate-progress-indeterminate'
+                }`} />
               </div>
             </div>
           </div>
-        )}
-
-        <div className={`mt-8 flex justify-end transition-all ${isUploading || uploadStatus.includes('Error') || !file ? 'opacity-0 hidden' : 'opacity-100'}`}>
-          {!resumeData && (
-            <Button
-              size="lg"
-              onClick={handleUpload}
-              className="w-full sm:w-auto rounded-full px-8 bg-white text-black hover:bg-zinc-200 transition-all font-semibold"
+        ) : (
+          <>
+            <div
+              className={`relative p-10 border-2 border-dashed rounded-2xl transition-all duration-300 flex flex-col items-center justify-center text-center
+                ${file ? 'border-zinc-400 bg-white/5' : 'border-white/20 hover:border-white/40 hover:bg-white/5'}
+              `}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
             >
-              Start Analysis <ChevronRight className="w-4 h-4 ml-2" />
-            </Button>
-          )}
+              {file ? (
+                <div className="flex flex-col items-center animate-fade-in">
+                  <div className="bg-white/10 p-4 rounded-full mb-4 ring-4 ring-white/5">
+                    <FileText className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="text-lg font-semibold text-white mb-1">{file.name}</div>
+                  <div className="text-sm text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center">
+                  <div className="bg-white/5 p-4 rounded-full mb-4 group-hover:bg-white/10 transition-colors">
+                    <UploadCloud className="w-10 h-10 text-muted-foreground" />
+                  </div>
+                  <p className="text-white text-lg font-medium mb-1">Drag and drop your PDF here</p>
+                  <p className="text-muted-foreground text-sm mb-6">Max file size 5MB</p>
+
+                  <label htmlFor="file-input">
+                    <Button type="button" size="lg" className="rounded-full bg-white text-black hover:bg-zinc-200 cursor-pointer pointer-events-none">
+                      <span>Browse Files</span>
+                    </Button>
+                  </label>
+                  <input
+                    id="file-input"
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6 flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/5">
+              <Clock className="w-5 h-5 text-zinc-400 shrink-0 mt-0.5" />
+              <p className="text-sm text-muted-foreground">
+                <span className="text-gray-300 font-medium">First-time use:</span> The backend might take 1-2 minutes to spin up. If the upload hangs, simply try again.
+              </p>
+            </div>
+
+            {uploadStatus && uploadStatus.includes('Error') && (
+              <div className="mt-6 flex items-center gap-2 p-4 rounded-xl text-sm font-medium animate-fade-in bg-destructive/10 text-destructive border border-destructive/20">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                {uploadStatus}
+              </div>
+            )}
+          </>
+        )}
+
+        <div className={`mt-8 flex justify-end transition-all ${isUploading || !file ? 'opacity-0 hidden' : 'opacity-100'}`}>
+          <Button
+            size="lg"
+            onClick={handleUpload}
+            className="w-full sm:w-auto rounded-full px-8 bg-white text-black hover:bg-zinc-200 transition-all font-semibold"
+          >
+            Start Analysis <ChevronRight className="w-4 h-4 ml-2" />
+          </Button>
         </div>
       </Card>
     </div>

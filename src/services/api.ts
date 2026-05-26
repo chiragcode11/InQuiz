@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { InterviewConfig, Resume, InterviewSession, InterviewResponse } from '../types';
 
-const API_BASE_URL = 'https://inquiz-backend-1.onrender.com/api';
+// const API_BASE_URL = 'https://inquiz-backend-1.onrender.com/api';
+const API_BASE_URL = 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, 
+  timeout: 60000, 
 });
 
 api.interceptors.request.use(
@@ -121,6 +122,16 @@ export const apiService = {
       return response.data;
     } catch (error) {
       console.error('Error completing voice interview:', error);
+      throw error;
+    }
+  },
+
+  getElevenLabsSignedUrl: async () => {
+    try {
+      const response = await api.get('/elevenlabs/signed-url');
+      return response.data;
+    } catch (error) {
+      console.error('Error getting ElevenLabs signed URL:', error);
       throw error;
     }
   },
